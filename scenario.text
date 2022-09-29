@@ -1,0 +1,64 @@
+
+
+DataBase-> Tables ->
+* auth - for authentication for (login,signup)
+* cart - get all choose product in the cart table by instance users
+* delivery - delivery table for the details of order from order details table and product table via foreign key
+* orderdetails - get all details of order and product like address of particular customer and product id
+* orders - order table kept the user address and user id of particular customer
+* payment - payment kept the details of amount of user product and show status the payment is done or not
+* productcategories- admin or seller can add the category of the product
+* products - kept all the products in this table and seller can add product in that table
+* seller- In this table has seller id and seller details of the company etc
+* users - In user table as user data related to his identity and address and other essential details
+
+E-commerce RESTApi
+* DBhandler directory has mysql database connection and data access laye for the controller where all database 
+  query developed and export to other RESTApi controller where all logic happened for the request and response.
+* Controller will take care of all logic for the RESTApi and get request  process from server side and give
+  result as a response and export logic function to the router directory.
+* router will set the url for each request.There is defineing the structure of router so that we request to the server.
+* server.js has the main function or entry function for the E-COMMERCE app where all the configuration and middleware structure
+
+relation of the table
+
+auth->user->(order->product)->(orderdetails->payment)->delivery
+seller->category->product
+orderdetails->payment->delivery
+
+customer point of view
+* POST -> /api/signup
+* POST -> /api/login
+* GET  -> /api/user  (admin take care of all user detail)
+* GET, DELETE, PUT -> /api/user/:id (user can update , delete, getbyid of his personal detail)
+* POST -> /api/user/register
+* POST -> /api/user/categories/product (The user can select the category of the product so it get the
+                               product acc to his requirement. eg : clothes)
+                               select * from products where (select categoryId from categories where categoryid=id)
+* GET -> /api/cart ( to see what is in the cart)
+* POST->/api/cart/product/:productId ( to add product in the cart)
+* GET -> /api/user/payment ( gell all the payment history)
+* GET -> /api/:paymentid ( to get the receipt or payment history of the particular id)
+* GET -> /api/delivery/ID (delivery status )
+
+seller point of view
+* POST ->/api/seller/signup (to create seller account)
+* POST ->/api/seller/login  (to seller login)
+* POST -> /api/seller/category (to add the product category in the category table)
+* POST ->/api/seller/addProduct (seller will add product to the product table)
+* DELETE -> /api/seller/product/:productID ( to delete the product from the product table)
+* UPDATE -> /api/seller/product/:productId ( to update the product)
+* GET ->/api/seller/:sellerID (to get his all product data)
+* GET ->/api/seller/:sellerID/:productId (to get his all product by productID)
+
+Dashboard point of view
+* GET -> /api/dashboard/product (get all product from the product table)
+* GET -> /apt/dashboard/product/category/:categoryID (to filter the date acc to the category)
+* GET -> /api/dashboard/product/filterbyamount (to get the product acc to the range of amount)
+* GET -> /api/dashboard/productbrand (to get product bssed on the brand)
+* GET -> /api/dashboard/product/todaydeals 
+* GET -> /api/dashboard/product/monthlyDiscount
+* GET -> /api/dashboard/product/cart
+
+staff point of view
+* GET UPDATE PUT DELTE /api/staff/:staffid/product
